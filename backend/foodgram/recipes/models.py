@@ -99,6 +99,7 @@ class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         verbose_name='Ингредиент',
+        related_name='recipe_ingredients',
         on_delete=models.CASCADE
     )
     amount = models.PositiveSmallIntegerField(
@@ -108,6 +109,13 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = 'Состав блюда'
         verbose_name_plural = 'Состав блюд'
+        constraints = [
+            UniqueConstraint(
+                fields=['recipe', 'ingredient'],
+                name='recipe_ingredient',
+                violation_error_message='Ингредиенты должны быть уникальными'
+            )
+        ]
 
     def __str__(self):
         return self.ingredient.name

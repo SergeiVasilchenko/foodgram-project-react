@@ -57,18 +57,7 @@ class RecipeViewSet(ModelViewSet):
         author = self.request.user
         serializer.save(author=author)
 
-    def partial_update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(
-            instance,
-            data=request.data,
-            partial=True
-        )
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
-
-    def write_update(self, model, user, pk):
+    def add_item(self, model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         recipe = get_object_or_404(Recipe, id=pk)
@@ -76,7 +65,7 @@ class RecipeViewSet(ModelViewSet):
         serializer = RecipePreviewSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete_update(self, model, user, pk):
+    def delete_item(self, model, user, pk):
         item = model.objects.filter(user=user, recipe__id=pk)
         if item.exists():
             item.delete()
@@ -93,8 +82,8 @@ class RecipeViewSet(ModelViewSet):
     )
     def favorite(self, request, pk):
         if request.method == 'POST':
-            return self.write_update(Favorites, request.user, pk)
-        return self.delete_update(Favorites, request.user, pk)
+            return self.write_item(Favorites, request.user, pk)
+        return self.delete_item(Favorites, request.user, pk)
 
     @action(
         detail=True,
@@ -103,8 +92,8 @@ class RecipeViewSet(ModelViewSet):
     )
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
-            return self.write_update(UsersRecipes, request.user, pk)
-        return self.delete_update(UsersRecipes, request.user, pk)
+            return self.write_item(UsersRecipes, request.user, pk)
+        return self.delete_item(UsersRecipes, request.user, pk)
 
     @action(
         detail=False,
@@ -198,7 +187,7 @@ class CustomUserViewSet(UserViewSet):
         if serializer.is_valid():
             serializer.update(user, serializer.validated_data)
             return Response(
-                {'detail': 'Пароль успешно изменен'},
+                'Пароль успешно изменен',
                 status=status.HTTP_204_NO_CONTENT
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
