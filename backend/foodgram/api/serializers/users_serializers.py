@@ -6,7 +6,6 @@ from djoser.serializers import (UserSerializer, UserCreateSerializer,
 from rest_framework.fields import SerializerMethodField, CharField
 
 from users.models import Subscription
-from recipes.serializers import RecipePreviewSerializer
 
 User = get_user_model()
 
@@ -58,6 +57,7 @@ class SubscriptionSerializer(CustomUserSerializer):
         return data
 
     def get_recipes(self, obj):
+        from api.serializers.recipes_serializers import RecipePreviewSerializer
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()

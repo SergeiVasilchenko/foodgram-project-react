@@ -8,7 +8,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from drf_extra_fields.fields import Base64ImageField, IntegerField
 
 from recipes.models import Ingredient, Tag, Recipe, RecipeIngredient
-from users.serializers import CustomUserSerializer
+from api.serializers.users_serializers import CustomUserSerializer
 
 User = get_user_model()
 

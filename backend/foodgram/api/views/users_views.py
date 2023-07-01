@@ -8,8 +8,11 @@ from rest_framework.response import Response
 from djoser.views import UserViewSet
 
 from api.pagination import CustomPagination
-from users.serializers import (CustomUserSerializer, SubscriptionSerializer,
-                               PasswordChangeSerializer)
+from api.serializers.users_serializers import (
+    CustomUserSerializer,
+    SubscriptionSerializer,
+    PasswordChangeSerializer
+)
 from users.models import Subscription
 
 User = get_user_model()

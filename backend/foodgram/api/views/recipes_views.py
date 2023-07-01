@@ -14,9 +14,11 @@ from rest_framework.exceptions import PermissionDenied
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
-from .serializers import (IngredientSerializer, TagSerializer,
-                          RecipeReadSerializer, RecipeWriteSerializer,
-                          RecipePreviewSerializer)
+from api.serializers.recipes_serializers import (
+    IngredientSerializer, TagSerializer,
+    RecipeReadSerializer, RecipeWriteSerializer,
+    RecipePreviewSerializer
+)
 from recipes.models import (Ingredient, Recipe,
                             Tag, UsersRecipes, Favorites,
                             RecipeIngredient)
