@@ -67,10 +67,9 @@ class RecipeViewSet(ModelViewSet):
         if item.exists():
             item.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            raise PermissionDenied(
-                'У вас недостаточно прав редактировать данный рецепт'
-            )
+        raise PermissionDenied(
+            'У вас недостаточно прав редактировать данный рецепт'
+        )
 
     @action(
         detail=True,
