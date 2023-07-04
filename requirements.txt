@@ -14,3 +14,5 @@ python-dateutil==2.8.2
 tzdata==2023.3
 
 django-cors-headers==4.1.0
+
+python-dotenv==1.0.0
