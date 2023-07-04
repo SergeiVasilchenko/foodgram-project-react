@@ -52,6 +52,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           privateKey: ${{ secrets.SSH_KEY }}
           command: mkdir -p foodgram && mkdir -p foodgram/docs
       - name: copy infra
