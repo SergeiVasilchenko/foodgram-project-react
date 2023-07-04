@@ -53,6 +53,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.PORT }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           mkdir -p foodgram
           mkdir -p foodgram/docs
