@@ -51,8 +51,8 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
-        password: ${{ secrets.SSH_PASSPHRASE }}
-        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: mkdir -p foodgram && mkdir -p foodgram/docs
 #   copy_folder_content_recursively_to_remote:
 #     name: Copy infra and docs
