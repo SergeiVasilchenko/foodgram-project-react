@@ -55,7 +55,7 @@ jobs:
           privateKey: ${{ secrets.PRIVATE_KEY }}
           command: mkdir -p foodgram && mkdir -p foodgram/docs
       - name: copy infra
-        uses: garygrossgarten/github-action-ssh@release
+        uses: garygrossgarten/github-action-scp@release
         with:
           local: infra/
           remote: /${{ secrets.USERNAME }}/foodgram
@@ -63,7 +63,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           privateKey: ${{ secrets.PRIVATE_KEY }}
       - name: copy docs
-        uses: garygrossgarten/github-action-ssh@release
+        uses: garygrossgarten/github-action-scp@release
         with:
           local: docs/
           remote: /${{ secrets.USERNAME }}/foodgram/docs
