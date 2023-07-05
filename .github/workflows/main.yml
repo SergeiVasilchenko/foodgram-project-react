@@ -70,6 +70,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docs/openapi-schema.yml, docs/redoc.html"
           target: "foodgram/docs/"
+          rm: true
 
       - name: Copy files from foodgram-project-react/infra
         uses: appleboy/scp-action@v0.1.4
@@ -81,6 +82,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "infra/docker-compose.yml, infra/nginx.conf"
           target: "foodgram/"
+          rm: true
 
 
   build_backend_and_push_to_docker_hub:
