@@ -68,7 +68,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "openapi-schema.yml, redoc.html"
+          source: "docs/openapi-schema.yml, docs/redoc.html"
           target: "foodgram/docs/"
 
       - name: Copy files from foodgram-project-react/infra
@@ -79,7 +79,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "docker-compose.yml"
+          source: "infra/docker-compose.yml, infra/nginx.conf"
           target: "foodgram/"
 
 
