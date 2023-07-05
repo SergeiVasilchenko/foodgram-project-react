@@ -46,27 +46,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up SSH connection
+      - name: Set up SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: <REMOTE_HOST>
-          username: <USERNAME>
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            mkdir -p foodgram/docs
+            mkdir -p foodgram/infra
 
-      - name: Create Directories
-        run: |
-            ssh ${{ secrets.USER }}@${{ secrets.HOST }} "mkdir -p foodgram/docs"
-            ssh ${{ secrets.USER }}@${{ secrets.HOST }} "mkdir -p foodgram/infra"
+      - name: Copy files from foodgram-project-react/docs
+        uses: appleboy/scp-action@v0.3.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "foodgram-project-react/docs/*"
+          target: "foodgram/docs/"
 
-      - name: Copy Docs
-        run: scp -r ./foodgram-project-react/docs/* ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/foodgram/docs
-
-      - name: Copy Infra
-        run: scp -r ./foodgram-project-react/infra/* ${{ secrets.USER }}@${{ secrets.HOST }}:/home/${{ secrets.USER }}/foodgram
+      - name: Copy files from foodgram-project-react/infra
+        uses: appleboy/scp-action@v0.3.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "foodgram-project-react/infra/*"
+          target: "foodgram/infra/"
 
 #   build:
 #     name: Build
