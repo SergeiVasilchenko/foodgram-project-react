@@ -1,17 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-
-from djoser.serializers import (UserSerializer, UserCreateSerializer,
-                                PasswordSerializer)
-from rest_framework.fields import SerializerMethodField, CharField
-
+from djoser import serializers
+# from djoser.serializers import (
+#     PasswordSerializer, UserCreateSerializer, UserSerializer
+# )
+from rest_framework import serializers
 from users.models import Subscription
 
 User = get_user_model()
 
 
-class CustomUserSerializer(UserSerializer):
-    is_subscribed = SerializerMethodField(read_only=True)
+class CustomUserSerializer(serializers.UserSerializer):
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -32,8 +32,8 @@ class CustomUserSerializer(UserSerializer):
 
 
 class SubscriptionSerializer(CustomUserSerializer):
-    recipes_count = SerializerMethodField()
-    recipes = SerializerMethodField()
+    recipes_count = serializers.SerializerMethodField()
+    recipes = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -72,7 +72,7 @@ class SubscriptionSerializer(CustomUserSerializer):
         return obj.recipes.count()
 
 
-class CustomUserCreateSerializer(UserCreateSerializer):
+class CustomUserCreateSerializer(serializers.UserCreateSerializer):
     class Meta:
         model = User
         fields = (
@@ -84,9 +84,9 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         )
 
 
-class PasswordChangeSerializer(PasswordSerializer):
-    new_password = CharField(required=True)
-    current_password = CharField(required=True)
+class PasswordChangeSerializer(serializers.PasswordSerializer):
+    new_password = serializers.CharField(required=True)
+    current_password = serializers.CharField(required=True)
 
     def validate(self, attrs):
         user = self.context['request'].user

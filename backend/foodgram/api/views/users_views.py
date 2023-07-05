@@ -1,26 +1,21 @@
+import serializers.users_serializers
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from djoser.views import UserViewSet
-
-from api.pagination import CustomPagination
-from api.serializers.users_serializers import (
-    CustomUserSerializer,
-    SubscriptionSerializer,
-    PasswordChangeSerializer
-)
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from users.models import Subscription
+
+from .pagination import CustomPagination
 
 User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = serializers.CustomUserSerializer
     pagination_class = CustomPagination
 
     @action(
@@ -33,7 +28,7 @@ class CustomUserViewSet(UserViewSet):
         author_id = self.kwargs.get('id')
         author = get_object_or_404(User, id=author_id)
         if request.method == 'POST':
-            serializer = SubscriptionSerializer(
+            serializer = serializers.SubscriptionSerializer(
                 author,
                 data=request.data,
                 context={"request": request}
@@ -58,7 +53,7 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
         queryset = User.objects.filter(subscribing__user=user)
         pages = self.paginate_queryset(queryset)
-        serializer = SubscriptionSerializer(
+        serializer = serializers.SubscriptionSerializer(
             pages,
             many=True,
             context={"request": request}
@@ -73,7 +68,7 @@ class CustomUserViewSet(UserViewSet):
     )
     def set_password(self, request, pk=None):
         user = request.user
-        serializer = PasswordChangeSerializer(
+        serializer = serializers.PasswordChangeSerializer(
             data=request.data,
             context={'request': request}
         )
