@@ -69,7 +69,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "foodgram-project-react/docs/*"
+          source: "docs/*"
           target: "foodgram/docs/"
 
       - name: Copy files from foodgram-project-react/infra
@@ -80,7 +80,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "foodgram-project-react/infra/*"
+          source: "infra/*"
           target: "foodgram/infra/"
 
 #   build:
