@@ -57,8 +57,8 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
+            mkdir -p foodgram/
             mkdir -p foodgram/docs
-        # mkdir -p foodgram/infra
 
       - name: Copy files from foodgram-project-react/docs
         uses: appleboy/scp-action@v0.1.4
@@ -68,9 +68,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "docs/openapi-schema.yml, docs/redoc.html"
+          source: "openapi-schema.yml, redoc.html"
           target: "foodgram/docs/"
-          rm: true
 
       - name: Copy files from foodgram-project-react/infra
         uses: appleboy/scp-action@v0.1.4
@@ -80,9 +79,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "infra/docker-compose.yml, infra/nginx.conf"
+          source: "docker-compose.yml, nginx.conf"
           target: "foodgram/"
-          rm: true
 
 
   build_backend_and_push_to_docker_hub:
