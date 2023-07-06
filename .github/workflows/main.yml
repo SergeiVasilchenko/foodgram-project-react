@@ -171,10 +171,10 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker image prune -a
-            sudo docker-compose stop
+            sudo docker compose -f docker-compose.yml down
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
-            sudo docker-compose up -d
+            sudo docker compose -f docker-compose.yml up -d
 
   send_message:
     runs-on: ubuntu-latest
