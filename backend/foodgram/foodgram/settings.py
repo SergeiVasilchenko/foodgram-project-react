@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='secret_key')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '158.160.30.28', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '158.160.30.28', '127.0.0.1', 'foodgrammie.ddns.net']
 
 
 INSTALLED_APPS = [
