@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 # from djoser.serializers import (
 #     PasswordSerializer, UserCreateSerializer, UserSerializer
 # )
-from djoser.serializers import UserSerializer
+from djoser.serializers import UserSerializer, UserCreateSerializer
 from rest_framework import serializers
 from users.models import Subscription
 
@@ -73,7 +73,7 @@ class SubscriptionSerializer(CustomUserSerializer):
         return obj.recipes.count()
 
 
-class CustomUserCreateSerializer(serializers.UserCreateSerializer):
+class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta:
         model = User
         fields = (
