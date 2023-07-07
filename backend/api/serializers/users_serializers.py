@@ -1,18 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-# from djoser import serializers
-# from djoser.serializers import (
-#     PasswordSerializer, UserCreateSerializer, UserSerializer
-# )
-from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework import serializers
+from django.db import models
+from djoser.serializers import (PasswordSerializer, UserCreateSerializer,
+                                UserSerializer)
+from rest_framework.fields import SerializerMethodField
 from users.models import Subscription
 
 User = get_user_model()
 
 
 class CustomUserSerializer(UserSerializer):
-    is_subscribed = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -33,8 +31,8 @@ class CustomUserSerializer(UserSerializer):
 
 
 class SubscriptionSerializer(CustomUserSerializer):
-    recipes_count = serializers.SerializerMethodField()
-    recipes = serializers.SerializerMethodField()
+    recipes_count = SerializerMethodField()
+    recipes = SerializerMethodField()
 
     class Meta:
         model = User
@@ -85,9 +83,9 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         )
 
 
-class PasswordChangeSerializer(serializers.PasswordSerializer):
-    new_password = serializers.CharField(required=True)
-    current_password = serializers.CharField(required=True)
+class PasswordChangeSerializer(PasswordSerializer):
+    new_password = models.CharField(required=True)
+    current_password = models.CharField(required=True)
 
     def validate(self, attrs):
         user = self.context['request'].user
