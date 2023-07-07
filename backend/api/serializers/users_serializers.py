@@ -1,16 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from djoser import serializers
+# from djoser import serializers
 # from djoser.serializers import (
 #     PasswordSerializer, UserCreateSerializer, UserSerializer
 # )
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from users.models import Subscription
 
 User = get_user_model()
 
 
-class CustomUserSerializer(serializers.UserSerializer):
+class CustomUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
