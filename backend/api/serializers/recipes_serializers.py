@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField, IntegerField
-from users_serializers import CustomUserSerializer
+
+from .users_serializers import CustomUserSerializer
 
 User = get_user_model()
 
