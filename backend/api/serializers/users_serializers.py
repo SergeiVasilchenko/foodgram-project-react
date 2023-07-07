@@ -50,7 +50,7 @@ class SubscriptionSerializer(CustomUserSerializer):
             raise ValidationError(
                 f'Вы уже подписаны на {author}'
             )
-        elif user == author:
+        if user == author:
             raise ValidationError(
                 'Ошибка! Вы не можете подписаться на себя'
             )

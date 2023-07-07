@@ -1,14 +1,16 @@
 import django.contrib.auth
 import django.db.models
-import django.http
-import django_filters.rest_framework
-import django_shortcuts
+# import django.http
+# import django_filters.rest_framework
 import recipes.models
 import rest_framework
 import serializers.recipes_serializers
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
+from django_shortcuts import get_object_or_404
 
 User = django.contrib.auth.get_user_model()
 
@@ -18,7 +20,7 @@ class IngredientViewSet(rest_framework.ReadOnlyModelViewSet):
     serializer_class = serializers.IngredientSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (
-        django_filters.rest_framework.DjangoFilterBackend,
+        DjangoFilterBackend,
     )
     filterset_class = IngredientFilter
 
@@ -34,7 +36,7 @@ class RecipeViewSet(rest_framework.ModelViewSet):
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (
-        django_filters.rest_framework.DjangoFilterBackend,
+        DjangoFilterBackend,
     )
     filterset_class = RecipeFilter
 
@@ -52,7 +54,7 @@ class RecipeViewSet(rest_framework.ModelViewSet):
             return rest_framework.Response(
                 status=rest_framework.status.HTTP_400_BAD_REQUEST
             )
-        recipe = django_shortcuts.get_object_or_404(recipes.Recipe, id=pk)
+        recipe = get_object_or_404(recipes.Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
         serializer = serializers.RecipePreviewSerializer(recipe)
         return rest_framework.Response(
@@ -117,7 +119,7 @@ class RecipeViewSet(rest_framework.ModelViewSet):
         ])
 
         filename = f'{user.username}_shopping_list.txt'
-        response = django.http.HttpResponse(
+        response = HttpResponse(
             shopping_list,
             content_type='text/plain'
         )
