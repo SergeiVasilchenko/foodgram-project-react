@@ -1,10 +1,11 @@
 import recipes.models
 import rest_framework
-import serializers.users_serializers
+# import serializers.users_serializers
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField, IntegerField
+from users_serializers import CustomUserSerializer
 
 User = get_user_model()
 
@@ -61,7 +62,7 @@ class RecipeIngredientReadSerializer(
 
 class RecipeReadSerializer(rest_framework.serializers.ModelSerializer):
     tags = TagSerializer(many=True)
-    author = serializers.users_serializers.CustomUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientReadSerializer(
         many=True,
         source='ingredient_in_recipe'
@@ -159,7 +160,7 @@ class RecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
         many=True,
         allow_empty=False
     )
-    author = serializers.users_serializers.CustomUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientWriteSerializer(
         many=True,
         allow_empty=False

@@ -1,7 +1,6 @@
 import django.urls
 import rest_framework.routers
-
-from .views import recipes_views, users_views
+from views import recipes_views, users_views
 
 app_name = 'api'
 
