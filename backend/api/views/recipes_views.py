@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import recipes_serializers
+from ..serializers import recipes_serializers
 
 User = django.contrib.auth.get_user_model()
 
