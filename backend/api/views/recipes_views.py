@@ -1,4 +1,3 @@
-import backend.recipes
 import django.contrib.auth
 import django.db.models
 from api.filters import IngredientFilter, RecipeFilter
@@ -12,6 +11,8 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
+
+import backend.recipes.models
 
 from ..serializers import recipes_serializers
 
