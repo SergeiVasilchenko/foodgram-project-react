@@ -1,6 +1,6 @@
 import django.contrib.auth
 import django.db.models
-import recipes.models
+# import recipes.models
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
@@ -13,7 +13,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
-from ..recipes import models
+from ....backend.recipes import models
+# from ..recipes import models
 from ..serializers import recipes_serializers
 
 User = django.contrib.auth.get_user_model()
@@ -58,7 +59,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
-        recipe = get_object_or_404(recipes.Recipe, id=pk)
+        recipe = get_object_or_404(models.Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
         serializer = recipes_serializers.RecipePreviewSerializer(recipe)
         return Response(
@@ -84,8 +85,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def favorite(self, request, pk):
         if request.method == 'POST':
-            return self.write_item(recipes.Favorites, request.user, pk)
-        return self.delete_item(recipes.Favorites, request.user, pk)
+            return self.write_item(models.Favorites, request.user, pk)
+        return self.delete_item(models.Favorites, request.user, pk)
 
     @action(
         detail=True,
@@ -94,8 +95,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
-            return self.write_item(recipes.UsersRecipes, request.user, pk)
-        return self.delete_item(recipes.UsersRecipes, request.user, pk)
+            return self.write_item(models.UsersRecipes, request.user, pk)
+        return self.delete_item(models.UsersRecipes, request.user, pk)
 
     @action(
         detail=False,
@@ -107,7 +108,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
-        ingredients = recipes.RecipeIngredient.objects.filter(
+        ingredients = models.RecipeIngredient.objects.filter(
             recipe__shopping_cart__user=request.user
         ).values(
             'ingredient__name',
