@@ -1,6 +1,5 @@
 import recipes.models
 import rest_framework
-# import serializers.users_serializers
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction

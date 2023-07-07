@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 # from djoser.serializers import (
 #     PasswordSerializer, UserCreateSerializer, UserSerializer
 # )
-from djoser.serializers import UserSerializer, UserCreateSerializer
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from users.models import Subscription
 
