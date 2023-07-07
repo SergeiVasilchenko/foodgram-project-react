@@ -4,7 +4,7 @@ import django.db.models
 # import django_filters.rest_framework
 import recipes.models
 import rest_framework
-import serializers.recipes_serializers
+# import serializers.recipes_serializers
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
@@ -12,12 +12,14 @@ from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from django_shortcuts import get_object_or_404
 
+from .serializers import recipes_serializers
+
 User = django.contrib.auth.get_user_model()
 
 
 class IngredientViewSet(rest_framework.ReadOnlyModelViewSet):
     queryset = recipes.Ingredient.objects.all()
-    serializer_class = serializers.IngredientSerializer
+    serializer_class = recipes_serializers.IngredientSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (
         DjangoFilterBackend,
@@ -27,7 +29,7 @@ class IngredientViewSet(rest_framework.ReadOnlyModelViewSet):
 
 class TagViewSet(rest_framework.ReadOnlyModelViewSet):
     queryset = recipes.Tag.objects.all()
-    serializer_class = serializers.TagSerializer
+    serializer_class = recipes_serializers.TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
@@ -42,8 +44,8 @@ class RecipeViewSet(rest_framework.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method in rest_framework.SAFE_METHODS:
-            return serializers.RecipeReadSerializer
-        return serializers.RecipeWriteSerializer
+            return recipes_serializers.RecipeReadSerializer
+        return recipes_serializers.RecipeWriteSerializer
 
     def perform_create(self, serializer):
         author = self.request.user
@@ -56,7 +58,7 @@ class RecipeViewSet(rest_framework.ModelViewSet):
             )
         recipe = get_object_or_404(recipes.Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
-        serializer = serializers.RecipePreviewSerializer(recipe)
+        serializer = recipes_serializers.RecipePreviewSerializer(recipe)
         return rest_framework.Response(
             serializer.data,
             status=rest_framework.status.HTTP_201_CREATED
