@@ -4,6 +4,7 @@ import recipes.models
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+from backend.recipes import models
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -13,7 +14,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
-from ..recipes import models
 from ..serializers import recipes_serializers
 
 User = django.contrib.auth.get_user_model()
