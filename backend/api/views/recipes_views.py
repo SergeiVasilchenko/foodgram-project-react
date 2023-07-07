@@ -13,13 +13,14 @@ from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
+from ..recipes import models
 from ..serializers import recipes_serializers
 
 User = django.contrib.auth.get_user_model()
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = recipes.Ingredient.objects.all()
+    queryset = models.Ingredient.objects.all()
     serializer_class = recipes_serializers.IngredientSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (
@@ -29,13 +30,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = recipes.Tag.objects.all()
+    queryset = models.Tag.objects.all()
     serializer_class = recipes_serializers.TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = recipes.Recipe.objects.all()
+    queryset = models.Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (
