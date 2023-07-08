@@ -1,4 +1,3 @@
-import serializers.users_serializers
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
@@ -9,13 +8,14 @@ from rest_framework.response import Response
 from users.models import Subscription
 
 from .pagination import CustomPagination
+from .serializers import users_serializers
 
 User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = serializers.CustomUserSerializer
+    serializer_class = users_serializers.CustomUserSerializer
     pagination_class = CustomPagination
 
     @action(
@@ -28,7 +28,7 @@ class CustomUserViewSet(UserViewSet):
         author_id = self.kwargs.get('id')
         author = get_object_or_404(User, id=author_id)
         if request.method == 'POST':
-            serializer = serializers.SubscriptionSerializer(
+            serializer = users_serializers.SubscriptionSerializer(
                 author,
                 data=request.data,
                 context={"request": request}
@@ -53,7 +53,7 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
         queryset = User.objects.filter(subscribing__user=user)
         pages = self.paginate_queryset(queryset)
-        serializer = serializers.SubscriptionSerializer(
+        serializer = users_serializers.SubscriptionSerializer(
             pages,
             many=True,
             context={"request": request}
@@ -68,7 +68,7 @@ class CustomUserViewSet(UserViewSet):
     )
     def set_password(self, request, pk=None):
         user = request.user
-        serializer = serializers.PasswordChangeSerializer(
+        serializer = users_serializers.PasswordChangeSerializer(
             data=request.data,
             context={'request': request}
         )
