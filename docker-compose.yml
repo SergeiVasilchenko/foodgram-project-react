@@ -1,4 +1,5 @@
 version: '3.3'
+
 volumes:
   postgres_data:
   static_volume:
