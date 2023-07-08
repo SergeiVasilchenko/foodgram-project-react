@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from users.models import Subscription
 
 from ..pagination import CustomPagination
-from .serializers import users_serializers
+from ..serializers import users_serializers
 
 User = get_user_model()
 
