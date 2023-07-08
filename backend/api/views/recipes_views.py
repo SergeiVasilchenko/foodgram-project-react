@@ -1,5 +1,6 @@
 import django.contrib.auth
 import django.db.models
+import recipes.models
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
@@ -12,15 +13,13 @@ from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
-import backend.recipes.models
-
 from ..serializers import recipes_serializers
 
 User = django.contrib.auth.get_user_model()
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = backend.recipes.Ingredient.objects.all()
+    queryset = recipes.Ingredient.objects.all()
     serializer_class = recipes_serializers.IngredientSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (
@@ -30,13 +29,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = backend.recipes.Tag.objects.all()
+    queryset = recipes.Tag.objects.all()
     serializer_class = recipes_serializers.TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = backend.recipes.Recipe.objects.all()
+    queryset = recipes.Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (
@@ -58,7 +57,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
-        recipe = get_object_or_404(backend.recipes.Recipe, id=pk)
+        recipe = get_object_or_404(recipes.Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
         serializer = recipes_serializers.RecipePreviewSerializer(recipe)
         return Response(
@@ -84,8 +83,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def favorite(self, request, pk):
         if request.method == 'POST':
-            return self.write_item(backend.recipes.Favorites, request.user, pk)
-        return self.delete_item(backend.recipes.Favorites, request.user, pk)
+            return self.write_item(recipes.Favorites, request.user, pk)
+        return self.delete_item(recipes.Favorites, request.user, pk)
 
     @action(
         detail=True,
@@ -95,11 +94,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
             return self.write_item(
-                backend.recipes.UsersRecipes,
+                recipes.UsersRecipes,
                 request.user,
                 pk
             )
-        return self.delete_item(backend.recipes.UsersRecipes, request.user, pk)
+        return self.delete_item(recipes.UsersRecipes, request.user, pk)
 
     @action(
         detail=False,
@@ -111,7 +110,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
-        ingredients = backend.recipes.RecipeIngredient.objects.filter(
+        ingredients = recipes.RecipeIngredient.objects.filter(
             recipe__shopping_cart__user=request.user
         ).values(
             'ingredient__name',
