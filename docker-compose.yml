@@ -10,7 +10,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-    - .env
+      - .env
+    environment:
+      - POSTGRES_DB=db
 
   backend:
     image: sergeivasilchenko/foodgram_backend:latest
