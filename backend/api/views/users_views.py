@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from users.models import Subscription
 
-from .pagination import CustomPagination
+from ..pagination import CustomPagination
 from .serializers import users_serializers
 
 User = get_user_model()
