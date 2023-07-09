@@ -61,16 +61,16 @@ jobs:
             mkdir -p foodgram/
             mkdir -p foodgram/docs
 
-      - name: Copy files from foodgram-project-react/docs
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "openapi-schema.yml, redoc.html"
-          target: "foodgram/docs/"
+      # - name: Copy files from foodgram-project-react/docs
+      #   uses: appleboy/scp-action@v0.1.4
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USER }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     port: ${{ secrets.PORT }}
+      #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
+      #     source: "openapi-schema.yml, redoc.html"
+      #     target: "foodgram/docs/"
 
       - name: Copy files from foodgram-project-react/infra
         uses: appleboy/scp-action@v0.1.4
