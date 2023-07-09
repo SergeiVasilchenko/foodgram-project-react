@@ -167,6 +167,9 @@ jobs:
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
             sudo docker compose -f docker-compose.yml up -d
+            sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
+            sudo docker compose -f docker-compose.yml exec backend cd -r /app/static/. /var/html/
+            sudo docker compose -f docker-compose.yml exec backend python manage.py loadingredients
 
   send_message:
     runs-on: ubuntu-latest
