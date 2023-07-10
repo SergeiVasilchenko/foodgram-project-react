@@ -84,8 +84,8 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class PasswordChangeSerializer(PasswordSerializer):
-    new_password = models.CharField(blank=False)
-    current_password = models.CharField(blank=False)
+    new_password = models.CharField(required=True)
+    current_password = models.CharField(required=True)
 
     def validate(self, attrs):
         user = self.context['request'].user
