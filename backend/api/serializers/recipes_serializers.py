@@ -161,6 +161,7 @@ class TagListSerializer(rest_framework.serializers.ListSerializer):
             raise ValidationError(
                 'Теги должны быть уникальными'
             )
+        return data
 
     def create(self, validated_data):
         recipe_tags = []
