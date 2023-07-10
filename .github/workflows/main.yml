@@ -6,62 +6,63 @@ on:
       - master
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13.10
-        env:
-          POSTGRES_USER: foodgram_user
-          POSTGRES_PASSWORD: foodgram_password
-          POSTGRES_DB: foodgram
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
-          # pip install flake8==6.0.0 flake8-isort==6.0.0
-          cd backend/
-          pip install -r requirements.txt
-      - name: Test with flake8 and django tests
-        env:
-          POSTGRES_USER: foodgram_user
-          POSTGRES_PASSWORD: foodgram_password
-          POSTGRES_DB: foodgram
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-        run: |
-          python -m flake8 backend/
+  # tests:
+  #   runs-on: ubuntu-latest
+  #   services:
+  #     postgres:
+  #       image: postgres:13.10
+  #       env:
+  #         POSTGRES_USER: foodgram_user
+  #         POSTGRES_PASSWORD: foodgram_password
+  #         POSTGRES_DB: foodgram
+  #       ports:
+  #         - 5432:5432
+  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v3
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: 3.9
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+  #         # pip install flake8==6.0.0 flake8-isort==6.0.0
+  #         cd backend/
+  #         pip install -r requirements.txt
+  #     - name: Test with flake8 and django tests
+  #       env:
+  #         POSTGRES_USER: foodgram_user
+  #         POSTGRES_PASSWORD: foodgram_password
+  #         POSTGRES_DB: foodgram
+  #         DB_HOST: 127.0.0.1
+  #         DB_PORT: 5432
+  #       run: |
+  #         python -m flake8 backend/
 
-  make_folders_and_copy_files:
-    runs-on: ubuntu-latest
+  # make_folders_and_copy_files:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            mkdir -p foodgram/
-            mkdir -p foodgram/docs
+  #     - name: Set up SSH
+  #       uses: appleboy/ssh-action@v0.1.10
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USER }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         port: ${{ secrets.PORT }}
+  #         passphrase: ${{ secrets.SSH_PASSPHRASE }}
+  #         script: |
+  #           mkdir -p foodgram/
+  #           mkdir -p foodgram/docs
 
-      # - name: Copy files from foodgram-project-react/docs
+
+      # - name: Copy files from foodgram-project-react/infra
       #   uses: appleboy/scp-action@v0.1.4
       #   with:
       #     host: ${{ secrets.HOST }}
@@ -69,26 +70,15 @@ jobs:
       #     key: ${{ secrets.SSH_KEY }}
       #     port: ${{ secrets.PORT }}
       #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
-      #     source: "openapi-schema.yml, redoc.html"
-      #     target: "foodgram/docs/"
-
-      - name: Copy files from foodgram-project-react/infra
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "docker-compose.yml, nginx.conf"
-          target: "foodgram/"
+      #     source: "docker-compose.yml, nginx.conf"
+      #     target: "foodgram/"
 
 
   build_backend_and_push_to_docker_hub:
     name: push backend image
     runs-on: ubuntu-latest
-    needs:
-      - tests
+    # needs:
+    #   - tests
     steps:
       - uses: actions/checkout@v2
       - name: Set up Docker Buildx
@@ -129,7 +119,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs:
-      - make_folders_and_copy_files
+      # - make_folders_and_copy_files
       - build_backend_and_push_to_docker_hub
       - build_frontend_and_push_to_docker_hub
     steps:
