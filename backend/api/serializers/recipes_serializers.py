@@ -212,19 +212,19 @@ class RecipeIngredientWriteSerializer(
 
 
 class RecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
-    tags = rest_framework.relations.PrimaryKeyRelatedField(
-        queryset=recipes.models.Tag.objects.all(),
-        many=True,
-        # allow_empty=False
-    )
+    # tags = rest_framework.relations.PrimaryKeyRelatedField(
+    #     queryset=recipes.models.Tag.objects.all(),
+    #     many=True,
+    #     # allow_empty=False
+    # )
     # tags = TagRecipeWriteSerializer(
     #     many=True,
     #     allow_empty=False
     # )
-    # tags = TagSerializer(
-    #     many=True,
-    #     read_only=False
-    # )
+    tags = TagSerializer(
+        many=True,
+        read_only=False
+    )
     author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientWriteSerializer(
         many=True,
