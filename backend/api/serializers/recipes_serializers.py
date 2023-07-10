@@ -159,68 +159,68 @@ class RecipeIngredientWriteSerializer(
         list_serializer_class = RecipeIngredientListSerializer
 
 
-class TagListSerializer(rest_framework.serializers.ListSerializer):
-    def validate(self, data):
-        tags_ids = [item['id'] for item in data]
-        if len(set(tags_ids)) != len(tags_ids):
-            raise ValidationError(
-                'Теги должны быть уникальными'
-            )
-        return data
+# class TagListSerializer(rest_framework.serializers.ListSerializer):
+#     def validate(self, data):
+#         tags_ids = [item['id'] for item in data]
+#         if len(set(tags_ids)) != len(tags_ids):
+#             raise ValidationError(
+#                 'Теги должны быть уникальными'
+#             )
+#         return data
 
-    def create(self, validated_data):
-        recipe_tags = []
-        for item in recipe_tags:
-            tag_id = item['id']
-            recipe_tags.append(
-                recipes.models.Tag(id=tag_id)
-            )
-        return recipes.models.Tag.objects.bulk_create(
-            recipe_tags
-        )
+#     def create(self, validated_data):
+#         recipe_tags = []
+#         for item in recipe_tags:
+#             tag_id = item['id']
+#             recipe_tags.append(
+#                 recipes.models.Tag(id=tag_id)
+#             )
+#         return recipes.models.Tag.objects.bulk_create(
+#             recipe_tags
+#         )
 
-    def update(self, instance, validated_data):
-        instance_mapping = {item.id: item for item in instance}
-        data_mapping = {item['id']: item for item in validated_data}
+#     def update(self, instance, validated_data):
+#         instance_mapping = {item.id: item for item in instance}
+#         data_mapping = {item['id']: item for item in validated_data}
 
-        for tag_id, data in data_mapping.items():
-            instance_item = instance_mapping.get(tag_id, None)
-            if instance_item is not None:
-                self.child.update(instance_item, data)
-        for tag_id, instance_item in instance_mapping.items():
-            if tag_id not in data_mapping:
-                instance_item.delete()
-        return instance
+#         for tag_id, data in data_mapping.items():
+#             instance_item = instance_mapping.get(tag_id, None)
+#             if instance_item is not None:
+#                 self.child.update(instance_item, data)
+#         for tag_id, instance_item in instance_mapping.items():
+#             if tag_id not in data_mapping:
+#                 instance_item.delete()
+#         return instance
 
-    def to_internal_value(self, data):
-        if isinstance(data, list):
-            return [{"id": tag_id} for tag_id in data]
-        raise ValidationError("Invalid data type. Expected a list.")
+#     def to_internal_value(self, data):
+#         if isinstance(data, list):
+#             return [{"id": tag_id} for tag_id in data]
+#         raise ValidationError("Invalid data type. Expected a list.")
 
 
-class TagRecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
-    id = DictField(
-        child=IntegerField(),
-        write_only=True
-    )
-    # id = IntegerField(write_only=True)
+# class TagRecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
+#     id = DictField(
+#         child=IntegerField(),
+#         write_only=True
+#     )
+#     # id = IntegerField(write_only=True)
 
-    class Meta:
-        model = recipes.models.Tag
-        fields = ('id')
-        list_serializer_class = TagListSerializer
+#     class Meta:
+#         model = recipes.models.Tag
+#         fields = ('id')
+#         list_serializer_class = TagListSerializer
 
 
 class RecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
-    # tags = rest_framework.relations.PrimaryKeyRelatedField(
-    #     queryset=recipes.models.Tag.objects.all(),
+    tags = rest_framework.relations.PrimaryKeyRelatedField(
+        queryset=recipes.models.Tag.objects.all(),
+        many=True,
+        # allow_empty=False
+    )
+    # tags = TagRecipeWriteSerializer(
     #     many=True,
     #     allow_empty=False
     # )
-    tags = TagRecipeWriteSerializer(
-        many=True,
-        allow_empty=False
-    )
     # tags = TagSerializer(
     #     many=True,
     #     read_only=False
