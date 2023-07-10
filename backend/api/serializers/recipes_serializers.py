@@ -186,6 +186,11 @@ class TagListSerializer(rest_framework.serializers.ListSerializer):
                 instance_item.delete()
         return instance
 
+    def to_internal_value(self, data):
+        if isinstance(data, list):
+            return [{"id": tag_id} for tag_id in data]
+        raise ValidationError("Invalid data type. Expected a list.")
+
 
 class TagRecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
     id = IntegerField(write_only=True)
