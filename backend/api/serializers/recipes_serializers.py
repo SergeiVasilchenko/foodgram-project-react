@@ -3,7 +3,7 @@ import rest_framework
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from drf_extra_fields.fields import Base64ImageField, IntegerField
+from drf_extra_fields.fields import Base64ImageField, IntegerField, DictField
 
 from .users_serializers import CustomUserSerializer
 
@@ -199,7 +199,11 @@ class TagListSerializer(rest_framework.serializers.ListSerializer):
 
 
 class TagRecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
-    id = IntegerField(write_only=True)
+    id = DictField(
+        child=IntegerField(),
+        write_only=True
+    )
+    # id = IntegerField(write_only=True)
 
     class Meta:
         model = recipes.models.Tag
