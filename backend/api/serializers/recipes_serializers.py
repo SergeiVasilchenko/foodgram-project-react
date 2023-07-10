@@ -211,13 +211,16 @@ class RecipeIngredientWriteSerializer(
 #         list_serializer_class = TagListSerializer
 class TagListSerializer(rest_framework.serializers.ListSerializer):
     def validate(self, data):
-        tags_ids = [item['id'] for item in data]
+        tags_ids = [item for item in data]
         if len(set(tags_ids)) != len(tags_ids):
             raise ValidationError('Теги должны быть уникальными')
         return data
 
     def create(self, validated_data):
-        tags = [recipes.models.Tag(**item) for item in validated_data]
+        tags = [
+            recipes.models.Tag.objects.get(id=item)
+            for item in validated_data
+        ]
         return recipes.models.Tag.objects.bulk_create(tags)
 
 
