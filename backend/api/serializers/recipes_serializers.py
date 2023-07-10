@@ -3,7 +3,7 @@ import rest_framework
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from drf_extra_fields.fields import Base64ImageField, IntegerField, DictField
+from drf_extra_fields.fields import Base64ImageField, DictField, IntegerField
 
 from .users_serializers import CustomUserSerializer
 
