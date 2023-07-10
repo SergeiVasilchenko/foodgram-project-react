@@ -245,6 +245,25 @@ class RecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
             'cooking_time',
         )
 
+    def validate_tags(self, tags):
+        if not tags:
+            raise ValidationError({
+                'tags': 'Нужно выбрать хотя бы оин тэг'
+            })
+        valid_tags = []
+        for tag in tags:
+            if not recipes.models.Tag.objects.filter(id__in=tags).exists():
+                raise ValidationError({
+                    'tags': 'Такой тэг пока не добавили, '
+                            'обратитесь к админу :)'
+                })
+            if tag in valid_tags:
+                raise ValidationError({
+                    'tags': 'Вы уже добавили этот тэг, проверьте :)'
+                })
+            valid_tags.append(tag)
+        return tags
+
     @transaction.atomic
     def create_ingredients_amount(self, ingredients, recipe):
         recipe_ingredients = [
