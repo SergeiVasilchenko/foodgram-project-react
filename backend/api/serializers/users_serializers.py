@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.db import models
+# from django.db import models
 from djoser.serializers import (PasswordSerializer, UserCreateSerializer,
                                 UserSerializer)
-from rest_framework.fields import SerializerMethodField
+from rest_framework.fields import CharField, SerializerMethodField
 from users.models import Subscription
 
 User = get_user_model()
@@ -84,8 +84,16 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class PasswordChangeSerializer(PasswordSerializer):
-    new_password = models.CharField(required=True)
-    current_password = models.CharField(required=True)
+    new_password = CharField(
+        max_length=150,
+        trim_whitespace=False,
+        allow_blank=False
+    )
+    current_password = CharField(
+        max_length=150,
+        trim_whitespace=False,
+        allow_blank=False
+    )
 
     def validate(self, attrs):
         user = self.context['request'].user

@@ -1,9 +1,10 @@
-import recipes.models
 import rest_framework
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField, IntegerField
+
+import recipes.models
 
 from .users_serializers import CustomUserSerializer
 
