@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from djoser.serializers import (PasswordSerializer, UserCreateSerializer,
                                 UserSerializer)
 from rest_framework.fields import CharField, SerializerMethodField
+
 from users.models import Subscription
 
 User = get_user_model()
