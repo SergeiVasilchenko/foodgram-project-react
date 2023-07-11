@@ -79,8 +79,13 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Теги'
     )
+    # pub_date = models.DateTimeField(
+    #     verbose_name='Дата публикации',
+    #     auto_now_add=True
+    # )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
@@ -106,6 +111,7 @@ class RecipeIngredient(models.Model):
     )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Состав блюда'
         verbose_name_plural = 'Состав блюд'
         constraints = [
@@ -136,6 +142,7 @@ class Favorites(models.Model):
     )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
         constraints = [
@@ -164,6 +171,7 @@ class UsersRecipes(models.Model):
     )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Корзина покупок'
         verbose_name_plural = 'Корзины покупок'
         constraints = [
