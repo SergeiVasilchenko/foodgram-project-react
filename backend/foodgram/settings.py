@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='secret_key')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '158.160.30.28', '127.0.0.1', 'foodgrammie.ddns.net']
 
@@ -86,8 +86,6 @@ DJOSER = {
     'HIDE_USERS': False,
 }
 
-
-
 if DEBUG:
     DATABASES = {
         'default': {
@@ -107,12 +105,6 @@ else:
         }
     }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

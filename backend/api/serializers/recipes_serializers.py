@@ -1,10 +1,9 @@
+import recipes.models
 import rest_framework
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField, IntegerField
-
-import recipes.models
 
 from .users_serializers import CustomUserSerializer
 
@@ -203,14 +202,9 @@ class RecipeWriteSerializer(rest_framework.serializers.ModelSerializer):
         valid_tags = []
         for tag in tags:
             if not recipes.models.Tag.objects.filter(id__in=tags).exists():
-                raise ValidationError({
-                    'tags': 'Такой тэг пока не добавили, '
-                            'обратитесь к админу :)'
-                })
+                raise ValidationError('Тега не сущестует')
             if tag in valid_tags:
-                raise ValidationError({
-                    'tags': 'Вы уже добавили этот тэг, проверьте :)'
-                })
+                raise ValidationError('Теги не должы повторяться')
             valid_tags.append(tag)
         return tags
 
